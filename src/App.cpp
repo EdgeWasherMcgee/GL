@@ -103,6 +103,7 @@ int main(void) {
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(640, 480, "glProg", NULL, NULL);
     if (!window) {
+        fprintf(stderr, "Could not create window\n");
         glfwTerminate();
         return -1;
     }
@@ -118,8 +119,6 @@ int main(void) {
     /* Problem: glewInit failed, something is seriously wrong. */
         fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
     }
-
-
 
     float positions[8] = {
     	-0.5f, -0.5f,
@@ -160,7 +159,7 @@ int main(void) {
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
-        /* Render here */
+            /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
         GLCall(glUseProgram(program));
@@ -168,8 +167,6 @@ int main(void) {
 
         va.Bind();
         ib.Bind();
-
-        std::cout << "In loop" << std::endl;
 
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 

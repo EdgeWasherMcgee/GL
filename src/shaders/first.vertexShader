@@ -1,7 +1,11 @@
-#version 330 core
-#version 330 core
-layout(location = 0) in vec3 vertexPosition_modelspace;
+#version 430 core
+
+layout(location = 0) in vec2 vertexPosition;
+uniform float theta;
+
 void main() {
-	gl_Position.xyz = vertexPosition_modelspace;
-	gl_Position.w = 1.0;
+	mat2 rotationMatrix = mat2(cos(theta), -sin(theta), 
+						  	   sin(theta),  cos(theta) );
+	vec2 newMatrix = rotationMatrix * vertexPosition;
+	gl_Position.xy = newMatrix.xy;
 }

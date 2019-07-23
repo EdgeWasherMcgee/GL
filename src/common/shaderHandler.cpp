@@ -53,8 +53,8 @@ GLuint createProgram(GLuint vertexShader, GLuint fragmentShader) {
 	GLCall(glAttachShader(program, fragmentShader));
 	GLCall(glLinkProgram(program));
 
-	GLCall(glGetShaderiv(program, GL_LINK_STATUS, &result));
-	GLCall(glGetShaderiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength));
+	GLCall(glGetProgramiv(program, GL_LINK_STATUS, &result));
+	GLCall(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &InfoLogLength));
 	if ( InfoLogLength > 0) {
 		std::vector<char> programErrorMessage(InfoLogLength+1);
 		GLCall(glGetShaderInfoLog(program, InfoLogLength, NULL, &programErrorMessage[0]));

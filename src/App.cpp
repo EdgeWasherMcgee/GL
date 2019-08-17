@@ -1,146 +1,87 @@
-#include <stdio.h>
-#include <iostream>
-#include <cmath>
 #include "common/renderer.h"
-#include "common/shaderHandler.h"
+#include "shader/shader.h"
 
-struct graphicsContext {
-    GLFWwindow *window;
-    GLuint program;
-    GLuint vbo;
-    GLuint vao;
-    GLuint ebo;
-    long frameCount;
-    double lastFrame;
+struct windowContext {
+	GLFWwindow* window;
+	GLuint vao;
+	GLuint vbo;
 };
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+}
+
 int main(void) {
+	
+	windowContext context;
 
-    graphicsContext gc;
+	/* Initialize the library */
+	if (!glfwInit())
+		return -1;
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
+	/* Create a windowed mode window and its OpenGL context */
+	context.window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	if (!context.window)
+	{
+		glfwTerminate();
+		return -1;
+	}
 
-    /* Create a windowed mode window and its OpenGL context */
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwMakeContextCurrent(context.window);
 
-    gc.window = glfwCreateWindow(600, 600, "Hello World", NULL, NULL);
-    if (!gc.window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+	GLenum err = glewInit();
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(gc.window);
+	if(GLEW_OK != err) {
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+	}
 
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to load glew\n");
-    }
+	glfwSetFramebufferSizeCallback(context.window, framebuffer_size_callback);
 
-    GLfloat vertices[] {
-         0.0f, -1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f, 0.0f
-    };
+	/* Make the window's context current */
 
-    // GLushort elements[] = {
-    //     0, 0, 1, 0, 2, 0,
-    //     0, 1, 1, 1, 2, 1,
-    //     0, 2, 1, 2, 2, 2,
-    //     0, 2, 1, 2, 2, 2
-    // };
+	Shader shader("./shader/first.vertexShader", "./shader/first.fragmentShader");
+	shader.use();
 
+	float vertices[] = {
+		-0.5f,  0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
+		 0.0f, -0.5f, 0.0f
+	};
 
-    GLCall(glGenVertexArrays(1, &gc.vao));
-    GLCall(glBindVertexArray(gc.vao));
+	GLCall(glGenVertexArrays(1, &context.vao));
+	GLCall(glBindVertexArray(context.vao));
 
-    GLCall(glGenBuffers(1, &gc.vbo));
-    GLCall(glBindBuffer(GL_ARRAY_BUFFER, gc.vbo));
-    GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), 0, GL_STATIC_DRAW));
-    GLCall(glNamedBufferSubData(gc.vbo, 0, sizeof(vertices), &vertices));
+	GLCall(glGenBuffers(1, &context.vbo));
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, context.vbo))
 
+	GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), (void *) vertices, GL_STATIC_DRAW));
 
-    GLCall(glEnableVertexAttribArray(0));
-    GLCall(glVertexAttribPointer(
-        0,
-        3,
-        GL_FLOAT,
-        GL_FALSE,
-        0,
-        NULL
-    ));
+	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL));
+	GLCall(glEnableVertexAttribArray(0));
 
-    // GLCall(glGenBuffers(1, &gc.ebo));
-    // GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gc.ebo));
-    // GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW));
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    GLuint vertexShader = loadShader("./shaders/test.vertexShader", GL_VERTEX_SHADER);
-    GLuint fragmentShader = loadShader("./shaders/first.fragmentShader", GL_FRAGMENT_SHADER);
+	glBindVertexArray(0);
 
-    GLuint program = createProgram(vertexShader, fragmentShader);
+	/* Loop until the user closes the window */
+	while (!glfwWindowShouldClose(context.window))
+	{
+		/* Render here */
+		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
-    float angle = 0.01f;
+		shader.use();
 
-    glm::mat4 model;
-    glm::mat4 unmodel = glm::mat4(1.0f);
-    // glm::mat4 view = glm::ortho(0.0f, 600.0f, 600.0f, 0.0f, 0.1f, 100.0f);
-    glm::mat4 projection = glm::mat4(1.0f);
+		GLCall(glBindVertexArray(context.vao));
 
-    GLCall(GLint s_model = glGetUniformLocation(program, "u_model"));
-    GLCall(GLint s_view = glGetUniformLocation(program, "u_view"));
-    GLCall(GLint s_projection = glGetUniformLocation(program, "u_projection"));
+		GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
 
-    unmodel = glm::scale(unmodel, glm::vec3(0.25f, 0.25f, 0.25f));
+		/* Swap front and back buffers */
+		glfwSwapBuffers(context.window);
 
-    GLCall(glClearColor(0.15f, 0.15f, 0.15f, 1.0f));
+		/* Poll for and process events */
+		glfwPollEvents();
+	}
 
-    GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(gc.window)) {
-        /* Render here */
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
-
-        GLCall(glUseProgram(program));
-
-        GLCall(glBindVertexArray(gc.vao));
-
-        GLCall(glUniformMatrix4fv(s_model, 1, GL_FALSE, glm::value_ptr(model)));
-        GLCall(glUniformMatrix4fv(s_view, 1, GL_FALSE, glm::value_ptr(view)));
-        GLCall(glUniformMatrix4fv(s_projection, 1, GL_FALSE, glm::value_ptr(projection)));
-
-        // GLCall(glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_SHORT, (void *)0));
-        model = glm::translate(unmodel, glm::vec3(-1.0f, -1.0f, 0.0f));
-        model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
-        GLCall(glUniformMatrix4fv(s_model, 1, GL_FALSE, glm::value_ptr(model)));
-        GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-
-        model = glm::translate(unmodel, glm::vec3(1.0f, -1.0f, 0.0f));
-        model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
-        GLCall(glUniformMatrix4fv(s_model, 1, GL_FALSE, glm::value_ptr(model)));
-        GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-
-        model = glm::translate(unmodel, glm::vec3(-1.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
-        GLCall(glUniformMatrix4fv(s_model, 1, GL_FALSE, glm::value_ptr(model)));
-        GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-
-        model = glm::translate(unmodel, glm::vec3(1.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, angle, glm::vec3(0.0f, 0.0f, 1.0f));
-        GLCall(glUniformMatrix4fv(s_model, 1, GL_FALSE, glm::value_ptr(model)));
-        GLCall(glDrawArrays(GL_TRIANGLES, 0, 3));
-        /* Swap front and back buffers */
-        glfwSwapBuffers(gc.window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
-
-
-    glfwTerminate();
-    return 0;
+	glfwTerminate();
+	return 0;
 }

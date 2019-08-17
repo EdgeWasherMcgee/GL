@@ -1,6 +1,12 @@
 #version 330 core
-layout (location 0) in vec3 aPos;
+layout (location = 0) in vec3 aPos;
 
 void main() {
-	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+	mat3 rotationMatrix = mat3(
+		 sin(radians), cos(radians), 1,
+		-cos(radians), sin(radians), 1,
+		 1, 		   1, 			 1
+	);
+	vec3 rotated = aPos * rotationMatrix;
+	gl_Position = vec4(rotated.xyz, 1.0f);
 }

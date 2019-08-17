@@ -18,11 +18,12 @@ public:
 		GLCall(GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER));
 
 		//Reading VertexShader file and storing it in a stringstream
-		const char *vertexShaderChar = loadFile(vertexShaderSource);
+		std::string vertexShaderString= loadFile(vertexShaderSource);
 
+		const GLchar *v[1] = {vertexShaderString.data()};
 
 		//Attaching the source and compiling the shader
-		GLCall(glShaderSource(vertexShader, 1, &vertexShaderChar, NULL));
+		GLCall(glShaderSource(vertexShader, 1, v, NULL));
 		GLCall(glCompileShader(vertexShader));
 
 		int success;
@@ -36,10 +37,12 @@ public:
 		}
 
 		//Reading FragmentShader file and storing it in a stringstream
-		const char *fragmentShaderChar = loadFile(fragmentShaderSource);
+		std::string fragmentShaderString = loadFile(fragmentShaderSource);
+
+		const GLchar *f[1] = {fragmentShaderString.data()};
 
 		//Attaching the source and compiling the shader
-		GLCall(glShaderSource(fragmentShader, 1, &fragmentShaderChar, NULL));
+		GLCall(glShaderSource(fragmentShader, 1, f, NULL));
 		GLCall(glCompileShader(fragmentShader));
 
 		//Compile error checking
@@ -60,6 +63,9 @@ public:
 			GLCall(glGetProgramInfoLog(program, 512, NULL, infoLog));
 			std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 		}
+
+		GLCall(glDetachShader(program, vertexShader));
+		GLCall(glDetachShader(program, fragmentShader));
 
 		GLCall(glDeleteShader(vertexShader));
 		GLCall(glDeleteShader(fragmentShader));
@@ -118,23 +124,24 @@ private:
 
 	GLuint program;
 
-	const char* loadFile(std::string fileSource) {
+	std::string loadFile(std::string fileSource) {
 		//Loading file
 		std::ifstream file(fileSource);
 
-		const char *charFile;
+		std::string charFile;
 
 		//If loading was successfull, we read the file and put it into a stringstream which in turn is converted to the target type
 		if (file) {
 			std::stringstream ss;
 			ss << file.rdbuf();
 			file.close();
-			charFile = ss.str().c_str();
+			charFile = ss.str();
 		} else {
 			std::cout << "Failed to load file: " << fileSource << "!" << std::endl;
 		}
 
 		return charFile;
+
 	}
 
 };

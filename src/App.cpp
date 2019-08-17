@@ -43,9 +43,9 @@ int main(void) {
 	shader.use();
 
 	float vertices[] = {
-		-0.5f,  0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		 0.0f, -0.5f, 0.0f
+		-0.5f,  -0.5f, 0.0f,
+		 0.5f,  -0.5f, 0.0f,
+		 0.0f,   0.5f, 0.0f
 	};
 
 	GLCall(glGenVertexArrays(1, &context.vao));

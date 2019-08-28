@@ -2,11 +2,5 @@
 layout (location = 0) in vec3 aPos;
 
 void main() {
-	mat3 rotationMatrix = mat3(
-		 sin(radians), cos(radians), 1,
-		-cos(radians), sin(radians), 1,
-		 1, 		   1, 			 1
-	);
-	vec3 rotated = aPos * rotationMatrix;
-	gl_Position = vec4(rotated.xyz, 1.0f);
+	gl_Position = vec4(aPos, 1.0f);
 }

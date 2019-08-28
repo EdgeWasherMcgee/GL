@@ -18,7 +18,7 @@ public:
 		GLCall(GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER));
 
 		//Reading VertexShader file and storing it in a stringstream
-		std::string vertexShaderString= loadFile(vertexShaderSource);
+		std::string vertexShaderString = loadFile(vertexShaderSource);
 
 		const GLchar *v[1] = {vertexShaderString.data()};
 
@@ -69,7 +69,6 @@ public:
 
 		GLCall(glDeleteShader(vertexShader));
 		GLCall(glDeleteShader(fragmentShader));
-
 	}
 
 	~Shader() {
@@ -141,7 +140,6 @@ private:
 		}
 
 		return charFile;
-
 	}
 
 };

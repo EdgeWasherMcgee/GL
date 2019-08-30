@@ -6,20 +6,11 @@ VAO::VAO(IndexBuffer ibo, VertexBuffer vbo) {
 	VBO = vbo;
 
 	GLCall(glGenVertexArrays(1, &ID));
-	IBO.use();
-	VBO.use();
-}
 
-VAO::VAO(IndexBuffer ibo, VertexBuffer vbo, GLsizei vertices) {
-
-	this->vertices = vertices;
-	IBO = ibo;
-	VBO = vbo;
-
-	GLCall(glGenVertexArrays(1, &ID));
 	this->use();
 	IBO.use();
 	VBO.use();
+	GLCall(glBindVertexArray(0));
 }
 
 VAO::~VAO() {
@@ -31,22 +22,53 @@ VAO::~VAO() {
 void VAO::addAttribute(GLenum type, GLsizei size) {
 
 	this->use();
-	layout.push_back({processType(type), false, size});
 
 	unsigned long offset = 0;
 
 	unsigned int stride = 0;
 
+	layout.push_back({type, false, size});
+
 	for (auto i = layout.begin(); i != layout.end(); i++) {
-		stride += sizeof(i->type) * i->size; 
+		stride += getTypeSize(type) * i->size; 
 	}
 	
 	for (int i = 0; i < layout.size(); i++) {
-		GLCall(glEnableVertexAttribArray(i));
+		GLCall(glVertexAttribPointer(i, layout[i].size, layout[i].type, layout[i].normalize, stride, (void *) offset));
+		offset = getTypeSize(type) * 4;
 
-		GLCall(glVertexAttribPointer(i, 4, type, false, stride, (void *) offset));
-		offset = sizeof(type) * 4;
+		GLCall(glEnableVertexAttribArray(i));
 	}
+}
+
+GLsizei VAO::getTypeSize(GLenum type) {
+
+	switch (type){
+		case GL_FLOAT:
+			return sizeof(float);
+
+		case GL_UNSIGNED_SHORT:
+			return sizeof(unsigned short);
+
+		case GL_UNSIGNED_INT:
+			return sizeof(unsigned int);
+	}
+
+	std::cout << "Type (" << type << ") not supported" << std::endl;
+	return 0;
+} 
+
+void VAO::drawElements(GLenum mode, GLsizei count) {
+
+	this->use();
+	GLCall(glDrawElements(mode, count, GL_UNSIGNED_SHORT, NULL));
+
+}
+
+void VAO::drawArrays(GLenum mode, GLuint offset, GLsizei count) {
+
+	this->use();
+	GLCall(glDrawArrays(mode, offset, count));
 
 }
 

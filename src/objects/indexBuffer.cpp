@@ -13,7 +13,7 @@ IndexBuffer::~IndexBuffer() {
 
 void IndexBuffer::bufferData(GLsizeiptr size, GLushort data[]) {
 
-	bufferSize = size + 0;
+	bufferSize = size;
 
 	this->use();
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, (void *) data, GL_STATIC_READ));

@@ -16,6 +16,8 @@ public:
 
 	void use();
 
+	void disuse();
+
 private:
 
 	GLuint ID;

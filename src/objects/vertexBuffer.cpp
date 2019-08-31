@@ -14,9 +14,9 @@ VertexBuffer::~VertexBuffer() {
 
 void VertexBuffer::bufferData(GLsizeiptr size, void *data) {
 
-	bufferSize = size + 0;
+	bufferSize = size;
 
-	this->use();
+	use();
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 
 }
@@ -25,20 +25,26 @@ void VertexBuffer::allocateData(GLsizeiptr size) {
 
 	bufferSize = size + 0;
 
-	this->use();
+	use();
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_STATIC_DRAW));
 
 }
 
 void VertexBuffer::subData(GLuint offset, GLsizeiptr size, void *data) {
 
-	this->use();
+	use();
 	GLCall(glBufferSubData(GL_ARRAY_BUFFER, offset, size, data));
-
+	
 }
 
 void VertexBuffer::use() {
 
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, ID));
+
+}
+
+void VertexBuffer::disuse() {
+
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
 }

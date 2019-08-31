@@ -12,12 +12,12 @@ struct vertexArrayObjectLayout {
 
 };
 
-class VAO {
+class VertexArray {
 
 public:
 
-	VAO(IndexBuffer ibo, VertexBuffer vbo);
-	~VAO();
+	VertexArray();
+	~VertexArray();
 
 	void addAttribute(GLenum type, GLsizei size);
 
@@ -25,16 +25,18 @@ public:
 
 	void drawArrays(GLenum mode, GLuint offset, GLsizei count);
 
-	void use();
+	inline void use();
+
+	inline void disuse();
+
+	IndexBuffer IBO;
+	VertexBuffer VBO;
 
 private:
 
 	std::vector<vertexArrayObjectLayout> layout;
 
 	GLuint ID;
-
-	IndexBuffer IBO;
-	VertexBuffer VBO;
 
 	GLsizei getTypeSize(GLenum type);
 

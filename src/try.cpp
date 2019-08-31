@@ -14,6 +14,12 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
 
+struct vertexWithColor {
+
+    float positions[3];
+    float rgb[3];
+};
+
 int main(void) {
     
     windowContext context;
@@ -48,31 +54,31 @@ int main(void) {
     Shader shader("shader/first.vertexShader", "shader/first.fragmentShader");
     shader.use();
 
-    float vertices[] = {
-        -0.5f,  -0.5f, 0.0f,
-         0.5f,  -0.5f, 0.0f,
-         0.0f,   0.5f, 0.0f
+    vertexWithColor vertices[4] = {
+
+        {{-0.5f, -0.5f, 0.0f}, {0.521f, 0.705f, 1.000f}},
+        {{ 0.5f, -0.5f, 0.0f}, {0.674f, 1.000f, 0.321f}},
+        {{-0.5f,  0.5f, 0.0f}, {1.000f, 0.321f, 0.933f}},
+        {{ 0.5f,  0.5f, 0.0f}, {1.000f, 0.501f, 0.501f}}
+
     };
 
-    IndexBuffer ibo;
-    VertexBuffer vbo;
+    VertexArray VAO;
 
-    vbo.bufferData(sizeof(float) * 9, (void *) vertices);
+    VAO.VBO.bufferData(sizeof(vertices), (void *) vertices);
 
-    VAO vao(ibo, vbo);
-    
-    vao.addAttribute(GL_FLOAT, 3);
+    VAO.addAttribute(GL_FLOAT, 3);
+    VAO.addAttribute(GL_FLOAT, 3);
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(context.window))
-    {
+    while (!glfwWindowShouldClose(context.window)) {
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         GLCall(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
 
         shader.use();
 
-        vao.drawArrays(GL_TRIANGLES, 0, 3);
+        VAO.drawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(context.window);

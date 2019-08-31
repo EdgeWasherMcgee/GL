@@ -1,10 +1,13 @@
-SOURCEFILES = App.cpp common/renderer.cpp
+SOURCEFILES = common/renderer.cpp objects/vao.cpp objects/vertexBuffer.cpp objects/indexBuffer.cpp
 OBJFILES = ${notdir ${SOURCEFILES:.cpp=.o}}
 INCLUDES = -lGL -lGLU -lGLEW -lglfw
 DEBUGPARAMS = -g
 
-app: ${OBJFILES}
-	g++ -o $@ $(OBJFILES) ${INCLUDES}
+try: try.cpp ${OBJFILES}
+	g++ -o $@ try.cpp $(OBJFILES) ${INCLUDES}
+
+app: App.cpp ${OBJFILES}
+	g++ -o $@ App.cpp $(OBJFILES) ${INCLUDES}
 
 debug: ${SOURCEFILES}
 	g++ ${SOURCEFILES} ${DEBUGPARAMS} -o $@ ${INCLUDES}
@@ -15,9 +18,11 @@ debug: ${SOURCEFILES}
 %.o : common/%.cpp
 	g++ -c $< -o $@ 
 
+%.o : objects/%.cpp
+	g++ -c $< -o $@
 
 clean: 
-	rm -f *.o app
+	rm -f *.o app try
 
-print :
+print:
 	@echo "OBJFILES: $(OBJFILES)"

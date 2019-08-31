@@ -15,7 +15,7 @@ void IndexBuffer::bufferData(GLsizeiptr size, GLushort data[]) {
 
 	bufferSize = size;
 
-	this->use();
+	use();
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, (void *) data, GL_STATIC_READ));
 
 }
@@ -24,22 +24,26 @@ void IndexBuffer::allocateData(GLsizeiptr size) {
 
 	bufferSize = size + 0;
 
-	this->use();
+	use();
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, NULL, GL_STATIC_READ));
 
 }
 
 void IndexBuffer::subData(GLuint offset, GLsizeiptr size, GLushort data[]) {
 
-	this->use();
+	use();
 	GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, (void *) data));
 
 }
 
-void IndexBuffer::use() {
+inline void IndexBuffer::use() {
 
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID));
 
 }
 
-// IndexBuffer::
+inline void IndexBuffer::disuse() {
+
+	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+
+}

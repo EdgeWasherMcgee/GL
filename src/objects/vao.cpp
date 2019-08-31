@@ -1,79 +1,93 @@
 #include "vao.h"
 
-VAO::VAO(IndexBuffer ibo, VertexBuffer vbo) {
-
-	IBO = ibo;
-	VBO = vbo;
+VertexArray::VertexArray() {
 
 	GLCall(glGenVertexArrays(1, &ID));
 
-	this->use();
+	use();
 	IBO.use();
 	VBO.use();
-	GLCall(glBindVertexArray(0));
+	disuse();
 }
 
-VAO::~VAO() {
+VertexArray::~VertexArray() {
 
 	GLCall(glDeleteVertexArrays(1, &ID));
 
 }
 
-void VAO::addAttribute(GLenum type, GLsizei size) {
+void VertexArray::addAttribute(GLenum type, GLsizei size) {
 
-	this->use();
+	use();
 
 	unsigned long offset = 0;
 
 	unsigned int stride = 0;
 
-	layout.push_back({type, false, size});
+	layout.push_back({type, GL_FALSE, size});
 
 	for (auto i = layout.begin(); i != layout.end(); i++) {
-		stride += getTypeSize(type) * i->size; 
+		stride += getTypeSize(i->type) * i->size; 
 	}
 	
 	for (int i = 0; i < layout.size(); i++) {
-		GLCall(glVertexAttribPointer(i, layout[i].size, layout[i].type, layout[i].normalize, stride, (void *) offset));
-		offset = getTypeSize(type) * 4;
 
+		// printf("glVertexAttribPointer(%d, %d, %d, %d, %d, %lu)\n", i, layout[i].size, layout[i].type, layout[i].normalize, stride, offset);
+		GLCall(glVertexAttribPointer(i, layout[i].size, layout[i].type, layout[i].normalize, stride, (void *) offset));		
 		GLCall(glEnableVertexAttribArray(i));
+
+		offset = getTypeSize(type) * layout[i].size;
 	}
+
+	disuse();
 }
 
-GLsizei VAO::getTypeSize(GLenum type) {
+GLsizei VertexArray::getTypeSize(GLenum type) {
 
-	switch (type){
+	switch (type) {
+
 		case GL_FLOAT:
-			return sizeof(float);
+			return sizeof(GLfloat);
 
 		case GL_UNSIGNED_SHORT:
-			return sizeof(unsigned short);
+			return sizeof(GLushort);
+
+		case GL_SHORT:
+			return sizeof(GLshort);
 
 		case GL_UNSIGNED_INT:
-			return sizeof(unsigned int);
+			return sizeof(GLuint);
+
+		case GL_INT:
+			return sizeof(GLint);
 	}
 
 	std::cout << "Type (" << type << ") not supported" << std::endl;
 	return 0;
 } 
 
-void VAO::drawElements(GLenum mode, GLsizei count) {
+void VertexArray::drawElements(GLenum mode, GLsizei count) {
 
 	this->use();
 	GLCall(glDrawElements(mode, count, GL_UNSIGNED_SHORT, NULL));
 
 }
 
-void VAO::drawArrays(GLenum mode, GLuint offset, GLsizei count) {
+void VertexArray::drawArrays(GLenum mode, GLuint offset, GLsizei count) {
 
 	this->use();
 	GLCall(glDrawArrays(mode, offset, count));
 
 }
 
-void VAO::use() {
+inline void VertexArray::use() {
 
 	GLCall(glBindVertexArray(ID));
+
+}
+
+inline void VertexArray::disuse() {
+
+	GLCall(glBindVertexArray(0));
 
 }

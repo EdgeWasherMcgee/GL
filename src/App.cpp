@@ -59,7 +59,7 @@ int main(void) {
 
 	GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), (void *) vertices, GL_STATIC_DRAW));
 
-	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL));
+	GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, NULL));
 	GLCall(glEnableVertexAttribArray(0));
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -67,8 +67,7 @@ int main(void) {
 	glBindVertexArray(0);
 
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(context.window))
-	{
+	// while (!glfwWindowShouldClose(context.window)) {
 		/* Render here */
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
@@ -83,7 +82,7 @@ int main(void) {
 
 		/* Poll for and process events */
 		glfwPollEvents();
-	}
+	// }
 
 	glfwTerminate();
 	return 0;

@@ -9,6 +9,7 @@ IndexBuffer::IndexBuffer() {
 IndexBuffer::~IndexBuffer() {
 
 	GLCall(glDeleteBuffers(1, &ID));
+	
 }
 
 void IndexBuffer::bufferData(GLsizeiptr size, GLushort data[]) {

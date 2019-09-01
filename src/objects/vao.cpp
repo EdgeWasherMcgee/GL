@@ -8,6 +8,7 @@ VertexArray::VertexArray() {
 	IBO.use();
 	VBO.use();
 	disuse();
+	
 }
 
 VertexArray::~VertexArray() {

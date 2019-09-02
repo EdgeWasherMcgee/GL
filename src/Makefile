@@ -1,4 +1,4 @@
-SOURCEFILES = common/renderer.cpp objects/vao.cpp objects/vertexBuffer.cpp objects/indexBuffer.cpp
+SOURCEFILES = common/renderer.cpp objects/vao.cpp objects/vertexBuffer.cpp objects/indexBuffer.cpp camera.cpp
 OBJFILES = ${notdir ${SOURCEFILES:.cpp=.o}}
 INCLUDES = -lGL -lGLU -lGLEW -lglfw
 DEBUGPARAMS = -g

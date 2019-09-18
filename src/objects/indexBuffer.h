@@ -14,9 +14,9 @@ public:
 
 	void bufferData(GLsizeiptr size, GLushort data[]);
 
-	inline void use();
+	inline void use() const;
 
-	inline void disuse();
+	inline void disuse() const;
 
 private:
 

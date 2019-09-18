@@ -13,3 +13,14 @@ bool GLLogCall(const char* function, const char* file, int line) {
     }
     return true;
 }
+
+void printMatrix(const glm::mat4 matrix) {
+
+	for (int x = 0; x < 4; x++) {
+		for (int y = 0; y < 4; y++) {
+			printf("%f, ", matrix[x][y]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}

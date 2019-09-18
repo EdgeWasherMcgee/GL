@@ -13,7 +13,7 @@ float lastFrame = 0.0f;
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, width*0.625);
+    glViewport(0, 0, width, width*0.625f);
 }
 
 int main(void) {
@@ -24,13 +24,14 @@ int main(void) {
 
     GLFWmonitor *monitor = glfwGetPrimaryMonitor();
 
-    const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+    // const GLFWvidmode *mode = glfwGetVideoMode(monitor);
 
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     /* Create a windowed mode window and its OpenGL context */
-    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Rotating square", monitor, NULL);
+    // GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Rotating square", monitor, NULL);
+    GLFWwindow* window = glfwCreateWindow(1000, 600, "Rotating cube", NULL, NULL);
 
     if (!window)
     {
@@ -42,7 +43,7 @@ int main(void) {
 
     GLenum err = glewInit();
 
-    if(GLEW_OK != err) {
+    if (GLEW_OK != err) {
         fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
     }
 
@@ -50,8 +51,9 @@ int main(void) {
     // glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetKeyCallback(window, key_callback);
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    glViewport(0, 0, mode->width, mode->height);
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // glViewport(0, 0, mode->width, mode->height);
+    glViewport(0, 0, 1000, 600);
 
     /* Make the window's context current */
 
@@ -107,12 +109,12 @@ int main(void) {
     VAO.addAttribute(GL_FLOAT, 3);
     VAO.addAttribute(GL_FLOAT, 3);
 
-    glm::mat4 modelMatrix(1);
-    modelMatrix  = modelMatrix * 5.0f;
+    glm::mat4 u_modelMatrix(1);
 
-    cam.setPos(glm::vec3(0.0f, 0.0f, -5.0f));
+    cam.setPos(glm::vec3(0.0f, -10.0f, 0.0f));
     // modelMatrix = glm::rotate(modelMatrix, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     /* Loop until the user closes the window */
+
     while (!glfwWindowShouldClose(window)) {
 
         float currentFrame = glfwGetTime();
@@ -125,11 +127,9 @@ int main(void) {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         GLCall(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
 
-        shader.setUniform("modelMatrix", modelMatrix);
-        shader.setUniform("viewMatrix", cam.viewMatrix);
-        shader.setUniform("perspectiveMatrix", cam.perspectiveMatrix);
-
-        modelMatrix = glm::rotate(modelMatrix, 0.01f, glm::vec3(5.0f, 0.7f, 0.3f));
+        shader.setUniform("modelMatrix", u_modelMatrix);
+        shader.setUniform("viewMatrix", cam.getViewMatrix());
+        shader.setUniform("perspectiveMatrix", cam.getPerspectiveMatrix());
 
         shader.use();
 

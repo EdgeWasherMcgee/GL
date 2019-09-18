@@ -37,13 +37,13 @@ void IndexBuffer::subData(GLuint offset, GLsizeiptr size, GLushort data[]) {
 
 }
 
-inline void IndexBuffer::use() {
+inline void IndexBuffer::use() const {
 
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID));
 
 }
 
-inline void IndexBuffer::disuse() {
+inline void IndexBuffer::disuse() const{
 
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 

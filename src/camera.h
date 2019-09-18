@@ -18,12 +18,23 @@ public:
 
 	void rotateZ(float angle);
 
+	void rotateAround(glm::vec3 vec);
+
+	glm::mat4 getViewMatrix() const;
+	glm::mat4 getPerspectiveMatrix() const;
+
 	float FOV;
 
-	glm::mat4 viewMatrix = glm::mat4(1);
-	glm::mat4 perspectiveMatrix = glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f);
 
 private:
 
-	// glm::vec3 xRot = glm::vec3(0, 1, 0);
+	glm::vec3 m_Front;
+	glm::vec3 m_Side;
+	glm::vec3 m_Up;
+
+	glm::vec3 m_Pos;
+
+	glm::mat4 m_PerspectiveMatrix = glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f);
+
+
 };

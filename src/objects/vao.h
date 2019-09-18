@@ -21,13 +21,13 @@ public:
 
 	void addAttribute(GLenum type, GLsizei size);
 
-	void drawElements(GLenum mode, GLsizei count);
+	void drawElements(GLenum mode, GLsizei count) const;
 
-	void drawArrays(GLenum mode, GLuint offset, GLsizei count);
+	void drawArrays(GLenum mode, GLuint offset, GLsizei count) const;
 
-	inline void use();
+	inline void use() const;
 
-	inline void disuse();
+	inline void disuse() const;
 
 	IndexBuffer IBO;
 	VertexBuffer VBO;
@@ -38,6 +38,6 @@ private:
 
 	GLuint ID;
 
-	GLsizei getTypeSize(GLenum type);
+	GLsizei getTypeSize(GLenum type) const;
 
 };

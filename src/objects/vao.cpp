@@ -43,7 +43,7 @@ void VertexArray::addAttribute(GLenum type, GLsizei size) {
 	disuse();
 }
 
-GLsizei VertexArray::getTypeSize(GLenum type) {
+GLsizei VertexArray::getTypeSize(GLenum type) const {
 
 	switch (type) {
 
@@ -67,27 +67,27 @@ GLsizei VertexArray::getTypeSize(GLenum type) {
 	return 0;
 } 
 
-void VertexArray::drawElements(GLenum mode, GLsizei count) {
+void VertexArray::drawElements(GLenum mode, GLsizei count) const {
 
 	this->use();
 	GLCall(glDrawElements(mode, count, GL_UNSIGNED_SHORT, NULL));
 
 }
 
-void VertexArray::drawArrays(GLenum mode, GLuint offset, GLsizei count) {
+void VertexArray::drawArrays(GLenum mode, GLuint offset, GLsizei count) const {
 
 	this->use();
 	GLCall(glDrawArrays(mode, offset, count));
 
 }
 
-inline void VertexArray::use() {
+inline void VertexArray::use() const {
 
 	GLCall(glBindVertexArray(ID));
 
 }
 
-inline void VertexArray::disuse() {
+inline void VertexArray::disuse() const {
 
 	GLCall(glBindVertexArray(0));
 

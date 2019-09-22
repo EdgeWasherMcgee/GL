@@ -65,16 +65,60 @@ int main(void) {
     // GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 
     float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-        -1.0f, -1.0f,  1.0f, 1.000f, 1.000f, 1.000f, //Front down left 0
-         1.0f, -1.0f,  1.0f, 1.000f, 0.000f, 1.000f, //Front down right 1
-        -1.0f,  1.0f,  1.0f, 0.000f, 1.000f, 1.000f, //Front up left 2
-         1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 1.000f, //Front up right 3
-        -1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 0.000f, //Back down left 4
-         1.0f, -1.0f, -1.0f, 1.000f, 0.000f, 0.000f, //Back down right 5
-        -1.0f,  1.0f, -1.0f, 0.000f, 1.000f, 0.000f, //Back up left 6
-         1.0f,  1.0f, -1.0f, 0.000f, 0.000f, 0.000f, //Back up right 7
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
+
+    // float vertices[] = {
+
+    //     -1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 0.000f, //Front left down 0
+    //     -1.0f,  1.0f, -1.0f, 0.000f, 1.000f, 0.000f, //Front right down 1
+    //     -1.0f, -1.0f,  1.0f, 1.000f, 1.000f, 1.000f, //Front left up 2
+    //     -1.0f,  1.0f,  1.0f, 0.000f, 1.000f, 1.000f, //Front right up 3
+    //      1.0f, -1.0f, -1.0f, 1.000f, 0.000f, 0.000f, //Back left down 4
+    //      1.0f,  1.0f, -1.0f, 0.000f, 0.000f, 0.000f, //Back right down 5
+    //      1.0f, -1.0f,  1.0f, 1.000f, 0.000f, 1.000f, //Back left up 6
+    //      1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 1.000f, //Back right up 7
+    // };
 
     unsigned short indices[] = {
 
@@ -102,16 +146,24 @@ int main(void) {
     VertexArray VAO;
 
     VAO.VBO.bufferData(sizeof(vertices), (void *) vertices);
-    VAO.IBO.bufferData(sizeof(indices), indices);
+    // VAO.IBO.bufferData(sizeof(indices), indices);
 
     GLuint indexCount = sizeof(indices)/sizeof(unsigned short);
 
     VAO.addAttribute(GL_FLOAT, 3);
-    VAO.addAttribute(GL_FLOAT, 3);
+    VAO.addAttribute(GL_FLOAT, 2);
 
     glm::mat4 u_modelMatrix(1);
 
-    cam.setPos(glm::vec3(0.0f, -10.0f, 0.0f));
+    u_modelMatrix[3][0] = 0.5f;
+    u_modelMatrix[3][1] = -0.5f;
+
+    cam.setPos(glm::vec3(-10.0f, 0.0f, 0.0f));
+    printMatrix(u_modelMatrix);
+    printMatrix(cam.getViewMatrix());
+    printMatrix(cam.getPerspectiveMatrix());
+    printMatrix(cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix);
+
     // modelMatrix = glm::rotate(modelMatrix, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     /* Loop until the user closes the window */
 
@@ -121,19 +173,18 @@ int main(void) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
+        // printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
+
 
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         GLCall(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
 
-        shader.setUniform("modelMatrix", u_modelMatrix);
-        shader.setUniform("viewMatrix", cam.getViewMatrix());
-        shader.setUniform("perspectiveMatrix", cam.getPerspectiveMatrix());
+        shader.setUniform("matrix", u_modelMatrix * cam.getViewMatrix() * cam.getPerspectiveMatrix());
 
         shader.use();
 
-        VAO.drawElements(GL_TRIANGLES, indexCount);
+        VAO.drawArrays(GL_TRIANGLES, 0, 36);
 
         // cam.move(glm::vec3(0, 0.005f, -0.01f));
 

@@ -2,8 +2,9 @@
 
 Camera::Camera() {
 
-	FOV = 180.0f;
-	m_PerspectiveMatrix = glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f);
+	FOV = 90.0f;
+	// m_PerspectiveMatrix = glm::transpose(glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f));
+	m_PerspectiveMatrix = glm::mat4(1);
 
 	m_Front = glm::vec3(1.0f, 0.0f, 0.0f);
 	m_Side = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -24,9 +25,9 @@ void Camera::lookAt(glm::vec3 pos) {
 
 	m_Front = normPos;
 
-	if (!(normPos.z > 0.98f)) {
+	if (!(glm::abs(normPos.z) > 0.98f)) {
 
-		m_Side = glm::cross(m_Front, glm::vec3(0.0f, 0.0f, 1.0f));
+		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, 0.0f, 1.0f)));
 
 	} else {
 

@@ -3,7 +3,7 @@
 Camera::Camera() {
 
 	FOV = 90.0f;
-	m_PerspectiveMatrix = glm::transpose(glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f));
+	m_PerspectiveMatrix = glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f);
 	// m_PerspectiveMatrix = glm::mat4(1);
 
 	m_Front = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -74,10 +74,10 @@ glm::mat4 Camera::getViewMatrix() const {
 	//Assembles the ViewMatrix from the existing parameters
 	return glm::mat4(
 
-		m_Front.x, m_Up.x, m_Side.x,  m_Pos.x,
-		m_Front.y, m_Up.y, m_Side.y,  m_Pos.y,
-		m_Front.z, m_Up.z, m_Side.z,  m_Pos.z,
-		0.0f, 	   0.0f,   0.0f, 	  1.0f
+		m_Front.x, m_Front.y, m_Front.z, 0.0f,
+		m_Up.x,    m_Up.y, 	  m_Up.z,	 0.0f,
+		m_Side.x,  m_Side.y,  m_Side.z,  0.0f,
+		m_Pos.x,   m_Pos.y,	  m_Pos.z,   1.0f
 		);
 
 }

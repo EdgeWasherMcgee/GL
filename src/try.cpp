@@ -60,9 +60,9 @@ int main(void) {
     Shader shader("shader/first.vertexShader", "shader/first.fragmentShader");
     shader.use();
 
-    // GLCall(glEnable(GL_DEPTH_TEST));
+    GLCall(glEnable(GL_DEPTH_TEST));
     GLCall(glEnable(GL_FRAMEBUFFER_SRGB));
-    // GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+    GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 
     // float vertices[] = {
     //     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,

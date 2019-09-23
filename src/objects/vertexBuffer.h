@@ -6,13 +6,14 @@ class VertexBuffer {
 public:
 
 	VertexBuffer();
-	~VertexBuffer();
 
 	void allocateData(GLsizeiptr size);
 
 	void subData(GLuint offset, GLsizeiptr size, void *data);
 
 	void bufferData(GLsizeiptr size, void *data);
+
+	void deleteBuffer();
 
 	void use();
 

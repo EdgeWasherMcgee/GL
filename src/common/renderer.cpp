@@ -18,7 +18,7 @@ void printMatrix(const glm::mat4 matrix) {
 
 	for (int x = 0; x < 4; x++) {
 		for (int y = 0; y < 4; y++) {
-			printf("%f, ", matrix[x][y]);
+			printf("%f, ", matrix[y][x]);
 		}
 		printf("\n");
 	}

@@ -34,7 +34,7 @@ private:
 
 	glm::vec3 m_Pos;
 
-	glm::mat4 m_PerspectiveMatrix = glm::perspective(FOV, (float)16/(float)10, 0.1f, 100.0f);
+	glm::mat4 m_PerspectiveMatrix;
 
 
 };

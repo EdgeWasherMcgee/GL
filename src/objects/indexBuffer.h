@@ -6,13 +6,14 @@ class IndexBuffer {
 public:
 
 	IndexBuffer();
-	~IndexBuffer();
 
 	void allocateData(GLsizeiptr size);
 
 	void subData(GLuint offset, GLsizeiptr size, GLushort data[]);
 
 	void bufferData(GLsizeiptr size, GLushort data[]);
+
+	void deleteBuffer();
 
 	inline void use() const;
 

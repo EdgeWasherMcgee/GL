@@ -6,12 +6,6 @@ VertexBuffer::VertexBuffer() {
 
 }
 
-VertexBuffer::~VertexBuffer() {
-
-	GLCall(glDeleteBuffers(1, &ID));
-
-}
-
 void VertexBuffer::bufferData(GLsizeiptr size, void *data) {
 
 	bufferSize = size;
@@ -35,6 +29,12 @@ void VertexBuffer::subData(GLuint offset, GLsizeiptr size, void *data) {
 	use();
 	GLCall(glBufferSubData(GL_ARRAY_BUFFER, offset, size, data));
 	
+}
+
+void VertexBuffer::deleteBuffer() {
+
+	GLCall(glDeleteBuffers(1, &ID));
+
 }
 
 void VertexBuffer::use() {

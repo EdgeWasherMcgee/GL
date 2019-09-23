@@ -71,52 +71,53 @@ public:
 		GLCall(glDeleteShader(fragmentShader));
 	}
 
-	~Shader() {
-		GLCall(glDeleteProgram(program));
-	}
-
-	void use() {
+	inline void use() const {
 		GLCall(glUseProgram(program));
 	}
 
-	GLuint getUniform(std::string name) {
+	GLuint getUniform(std::string name) const {
 		GLCall(GLuint uniform = glGetUniformLocation(program, name.c_str()));
 		return uniform; 
 	}
 
-	void setUniform(GLuint ID, float value) {
+	void setUniform(GLuint ID, float value) const {
 		GLCall(glUniform1f(ID, value))
 	}
 
-	void setUniform(std::string name, float value) {
+	void setUniform(std::string name, float value) const {
 		GLCall(setUniform(getUniform(name), value));
 	}
 
 
-	void setUniform(GLuint ID, int value) {
+	void setUniform(GLuint ID, int value) const {
 		GLCall(glUniform1i(ID, value))
 	}
 
-	void setUniform(std::string name, int value) {
+	void setUniform(std::string name, int value) const {
 		GLCall(setUniform(getUniform(name), value));
 	}
 
 
-	void setUniform(GLuint ID, bool value) {
+	void setUniform(GLuint ID, bool value) const {
 		GLCall(glUniform1i(ID, (int) value))
 	}
 
-	void setUniform(std::string name, bool value) {
+	void setUniform(std::string name, bool value) const {
 		GLCall(setUniform(getUniform(name), value));
 	}
 
 	
-	void setUniform(GLuint ID, glm::mat4 value) {
-		GLCall(glUniformMatrix4fv(ID, 1, GL_FALSE, glm::value_ptr(value)))
+	void setUniform(GLuint ID, const glm::mat4 &value) const {
+		GLCall(glUniformMatrix4fv(ID, 1, GL_FALSE, glm::value_ptr(value)));
 	}
 
-	void setUniform(std::string name, glm::mat4 value) {
+	void setUniform(std::string name, const glm::mat4 &value) const {
 		GLCall(setUniform(getUniform(name), value));
+	}
+
+	void deleteShader() {
+		
+		GLCall(glDeleteProgram(program));
 	}
 
 private:

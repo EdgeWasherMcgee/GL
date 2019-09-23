@@ -7,13 +7,14 @@ VertexArray::VertexArray() {
 	use();
 	IBO.use();
 	VBO.use();
-	disuse();
 	
 }
 
 VertexArray::~VertexArray() {
 
 	GLCall(glDeleteVertexArrays(1, &ID));
+	VBO.deleteBuffer();
+	IBO.deleteBuffer();
 
 }
 
@@ -69,14 +70,14 @@ GLsizei VertexArray::getTypeSize(GLenum type) const {
 
 void VertexArray::drawElements(GLenum mode, GLsizei count) const {
 
-	this->use();
+	use();
 	GLCall(glDrawElements(mode, count, GL_UNSIGNED_SHORT, NULL));
 
 }
 
 void VertexArray::drawArrays(GLenum mode, GLuint offset, GLsizei count) const {
 
-	this->use();
+	use();
 	GLCall(glDrawArrays(mode, offset, count));
 
 }

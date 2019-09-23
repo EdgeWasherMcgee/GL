@@ -60,65 +60,65 @@ int main(void) {
     Shader shader("shader/first.vertexShader", "shader/first.fragmentShader");
     shader.use();
 
-    GLCall(glEnable(GL_DEPTH_TEST));
+    // GLCall(glEnable(GL_DEPTH_TEST));
     GLCall(glEnable(GL_FRAMEBUFFER_SRGB));
     // GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    };
-
     // float vertices[] = {
+    //     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+    //      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    //     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    //     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-    //     -1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 0.000f, //Front left down 0
-    //     -1.0f,  1.0f, -1.0f, 0.000f, 1.000f, 0.000f, //Front right down 1
-    //     -1.0f, -1.0f,  1.0f, 1.000f, 1.000f, 1.000f, //Front left up 2
-    //     -1.0f,  1.0f,  1.0f, 0.000f, 1.000f, 1.000f, //Front right up 3
-    //      1.0f, -1.0f, -1.0f, 1.000f, 0.000f, 0.000f, //Back left down 4
-    //      1.0f,  1.0f, -1.0f, 0.000f, 0.000f, 0.000f, //Back right down 5
-    //      1.0f, -1.0f,  1.0f, 1.000f, 0.000f, 1.000f, //Back left up 6
-    //      1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 1.000f, //Back right up 7
+    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    //      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    //      0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    //      0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    //     -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+    //     -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    //     -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    //     -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    //      0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    //      0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    //      0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    //      0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+    //      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    //      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+    //     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    //     -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+    //     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     // };
+
+    float vertices[] = {
+
+        -1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 0.000f, //Front left down 0
+        -1.0f, -1.0f,  1.0f, 0.000f, 1.000f, 0.000f, //Front right down 1
+        -1.0f,  1.0f, -1.0f, 1.000f, 1.000f, 1.000f, //Front left up 2
+        -1.0f,  1.0f,  1.0f, 0.000f, 1.000f, 1.000f, //Front right up 3
+         1.0f, -1.0f, -1.0f, 1.000f, 0.000f, 0.000f, //Back left down 4
+         1.0f, -1.0f,  1.0f, 0.000f, 0.000f, 0.000f, //Back right down 5
+         1.0f,  1.0f, -1.0f, 1.000f, 0.000f, 1.000f, //Back left up 6
+         1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 1.000f, //Back right up 7
+    };
 
     unsigned short indices[] = {
 
@@ -146,23 +146,28 @@ int main(void) {
     VertexArray VAO;
 
     VAO.VBO.bufferData(sizeof(vertices), (void *) vertices);
-    // VAO.IBO.bufferData(sizeof(indices), indices);
+    VAO.IBO.bufferData(sizeof(indices), indices);
 
     GLuint indexCount = sizeof(indices)/sizeof(unsigned short);
 
     VAO.addAttribute(GL_FLOAT, 3);
-    VAO.addAttribute(GL_FLOAT, 2);
+    VAO.addAttribute(GL_FLOAT, 3);
 
     glm::mat4 u_modelMatrix(1);
+    // u_modelMatrix[0][0] = 0.25;
+    // u_modelMatrix[1][1] = 0.25;
+    // u_modelMatrix[2][2] = 0.25;
+    // u_modelMatrix[3][0] = 10;
+    // u_modelMatrix[0][3] = -10.0f;
 
-    u_modelMatrix[3][0] = 0.5f;
-    u_modelMatrix[3][1] = -0.5f;
+    cam.setPos(glm::vec3(0.0f, 0.0f, -10.0f));
 
-    cam.setPos(glm::vec3(-10.0f, 0.0f, 0.0f));
     printMatrix(u_modelMatrix);
     printMatrix(cam.getViewMatrix());
     printMatrix(cam.getPerspectiveMatrix());
-    printMatrix(cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix);
+    printMatrix(u_modelMatrix * cam.getViewMatrix() * cam.getPerspectiveMatrix());
+
+    glm::mat4 matrix;
 
     // modelMatrix = glm::rotate(modelMatrix, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     /* Loop until the user closes the window */
@@ -180,13 +185,16 @@ int main(void) {
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         GLCall(glClearColor(0.3f, 0.3f, 0.3f, 1.0f));
 
-        shader.setUniform("matrix", u_modelMatrix * cam.getViewMatrix() * cam.getPerspectiveMatrix());
-
         shader.use();
 
-        VAO.drawArrays(GL_TRIANGLES, 0, 36);
+        matrix = cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix;
 
-        // cam.move(glm::vec3(0, 0.005f, -0.01f));
+        shader.setUniform("matrix", matrix);
+
+        // VAO.drawArrays(GL_TRIANGLES, 0, 36);
+        VAO.drawElements(GL_TRIANGLES, indexCount);
+
+        cam.move(glm::vec3(0, 0.0f, 0.01f));
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

@@ -25,6 +25,7 @@ public:
 
 	float FOV;
 
+	glm::mat4 viewMatrix;
 
 private:
 
@@ -35,6 +36,7 @@ private:
 	glm::vec3 m_Pos;
 
 	glm::mat4 m_PerspectiveMatrix;
+
 
 
 };

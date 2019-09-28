@@ -22,14 +22,16 @@ Camera::~Camera() {
 
 void Camera::lookAt(glm::vec3 pos) {
 
+	viewMatrix = glm::lookAt(m_Pos, pos, glm::vec3(0.0f, 1.0f, 0.0f));
+
 	m_Front = glm::normalize(pos - m_Pos);
 
 	if (!(glm::abs(m_Front.y) > 0.99f))
-		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, -1.0f, 0.0f)));
+		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, 1.0f, 0.0f)));
 	else
-		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(1.0f, 0.0f, 0.0f)));
+		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, 0.0f, -1.0f)));
 
-	m_Up = glm::cross(m_Front, m_Side);
+	m_Up = glm::cross(m_Side, m_Front);
 
 }
 
@@ -62,11 +64,12 @@ glm::mat4 Camera::getViewMatrix() const {
 	//Assembles the ViewMatrix from the existing parameters
 	return glm::mat4(
 
-		 m_Front.x, m_Front.y, m_Front.z, 0.0f,
-		 m_Up.x,    m_Up.y,    m_Up.z,	  0.0f,
-		 m_Side.x,  m_Side.y,  m_Side.z,  0.0f,
-		-m_Pos.x,  -m_Pos.y,  -m_Pos.z,   1.0f
+		 m_Side.x,  				m_Up.x,  				-m_Front.x,  			   0.0f,
+		 m_Side.y,    				m_Up.y,    				-m_Front.y,	  			   0.0f,
+		 m_Side.z, 			   		m_Up.z, 			    -m_Front.z, 			   0.0f,
+		-glm::dot(m_Side, m_Pos),  -glm::dot(m_Up, m_Pos),   glm::dot(m_Front, m_Pos), 1.0f
 		);
+	// return viewMatrix;
 
 }
 

@@ -33,7 +33,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     /* Create a windowed mode window and its OpenGL context */
     // GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Rotating square", monitor, NULL);
-    GLFWwindow* window = glfwCreateWindow(2000, 1200, "Not rotating cube", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1500, 900, "Not rotating cube", NULL, NULL);
 
     if (!window)
     {
@@ -65,50 +65,6 @@ int main(void) {
     GLCall(glEnable(GL_DEPTH_TEST));
     GLCall(glEnable(GL_FRAMEBUFFER_SRGB));
     // GLCall(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
-
-    // float vertices[] = {
-    //     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-    //      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    //     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    //     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    //      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    //      0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    //      0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    //     -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-    //     -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    //     -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    //     -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    //      0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    //      0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    //      0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    //      0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-    //      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    //      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    //     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    //     -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-    //     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    //      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    //      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    //     -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    //     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-    // };
 
     float vertices[] = {
 
@@ -160,7 +116,7 @@ int main(void) {
     // u_modelMatrix[3][0] = 10;
     // u_modelMatrix[0][3] = -10.0f;
 
-    cam.setPos(glm::vec3(0.0f, 0.0f, 0.0f));
+    cam.setPos(glm::vec3(0.0f, 0.0f, -10.0f));
     cam.lookAt(glm::vec3(1.0f, 1.0f, 1.0f));
 
     printMatrix(u_modelMatrix);
@@ -181,8 +137,9 @@ int main(void) {
         lastFrame = currentFrame;
 
         // printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
-        if (cam.getViewMatrix() == lastViewMatrix) {
+        if (cam.getViewMatrix() != lastViewMatrix) {
             printMatrix(cam.getViewMatrix());
+            printMatrix(cam.viewMatrix);
             printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
 
@@ -191,13 +148,13 @@ int main(void) {
         GLCall(glClearColor(0.0f, 0.5019f, 0.3333f, 1.0f));
 
         shader.use();
-        cam.lookAt(glm::vec3(1.0f, 1.0f, 1.0f));
+        // cam.lookAt(glm::vec3(3.0f, 3.0f, 3.0f));
 
         // u_modelMatrix = glm::rotate(u_modelMatrix, 0.1f, glm::vec3(0.3, 0.7, 0.5));
 
-        u_modelMatrix[0][0] = 1.0;
-        u_modelMatrix[1][1] = 1.0;
-        u_modelMatrix[2][2] = 1.0;
+        u_modelMatrix[0][0] = 2.0;
+        u_modelMatrix[1][1] = 2.0;
+        u_modelMatrix[2][2] = 2.0;
         u_modelMatrix[3][0] = 0;
         u_modelMatrix[3][1] = 0;
         u_modelMatrix[3][2] = 0;
@@ -224,9 +181,9 @@ int main(void) {
         // VAO.drawArrays(GL_TRIANGLES, 0, 36);
         VAO.drawElements(GL_TRIANGLES, indexCount);
 
-        cam.move(acceleration);
-
         lastViewMatrix = cam.getViewMatrix();
+
+        cam.move(acceleration);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

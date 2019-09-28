@@ -33,7 +33,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     /* Create a windowed mode window and its OpenGL context */
     // GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Rotating square", monitor, NULL);
-    GLFWwindow* window = glfwCreateWindow(1000, 600, "Not rotating cube", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(2000, 1200, "Not rotating cube", NULL, NULL);
 
     if (!window)
     {
@@ -169,6 +169,7 @@ int main(void) {
     printMatrix(u_modelMatrix * cam.getViewMatrix() * cam.getPerspectiveMatrix());
 
     glm::mat4 matrix;
+    glm::mat4 lastViewMatrix = glm::mat4(1);
 
     // modelMatrix = glm::rotate(modelMatrix, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     /* Loop until the user closes the window */
@@ -180,11 +181,10 @@ int main(void) {
         lastFrame = currentFrame;
 
         // printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
-
-        printMatrix(u_modelMatrix);
-        printMatrix(cam.getViewMatrix());
-        printMatrix(cam.getPerspectiveMatrix());
-        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        if (cam.getViewMatrix() == lastViewMatrix) {
+            printMatrix(cam.getViewMatrix());
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        }
 
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -225,6 +225,8 @@ int main(void) {
         VAO.drawElements(GL_TRIANGLES, indexCount);
 
         cam.move(acceleration);
+
+        lastViewMatrix = cam.getViewMatrix();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);

@@ -26,10 +26,7 @@ void Camera::lookAt(glm::vec3 pos) {
 
 	m_Front = glm::normalize(pos - m_Pos);
 
-	if (!(glm::abs(m_Front.y) > 0.99f))
-		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, 1.0f, 0.0f)));
-	else
-		m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, 0.0f, -1.0f)));
+	m_Side = glm::normalize(glm::cross(m_Front, glm::vec3(0.0f, 1.0f, 0.0f)));
 
 	m_Up = glm::cross(m_Side, m_Front);
 
@@ -51,11 +48,35 @@ void Camera::rotateY(float angle) {
 
 	// Makes the correct rotations in worldSpace
 
+	glm::mat3 rotationMatrix = glm::mat3(
+
+		 cos(angle), 0.0f, sin(angle),
+		 0.0f,		 1.0f, 0.0f,
+		-sin(angle), 0.0f, cos(angle)
+
+	);
+
+	m_Front = rotationMatrix * m_Front;
+	m_Side = rotationMatrix * m_Side;
+	m_Up = rotationMatrix * m_Up;
+
 }
 	
-void Camera::rotateZ(float angle) {
+void Camera::rotateX(float angle) {
 
 	// Makes the correct rotations in worldSpace
+
+	glm::mat3 rotationMatrix = glm::mat3(
+
+		1.0f, 0.0f, 	   0.0f,
+		0.0f, cos(angle), -sin(angle),
+		0.0f, sin(angle),  cos(angle)
+
+	);
+
+	m_Front = rotationMatrix * m_Front;
+	m_Side = rotationMatrix * m_Side;
+	m_Up = rotationMatrix * m_Up;
 
 }
 
@@ -77,5 +98,23 @@ glm::mat4 Camera::getPerspectiveMatrix() const {
 
 	//This function is only here for consistancy, I could've made it public
 	return m_PerspectiveMatrix;
+
+}
+
+glm::vec3 Camera::getFront() const {
+
+	return m_Front;
+
+}
+
+glm::vec3 Camera::getSide() const {
+
+	return m_Side;
+
+}
+
+glm::vec3 Camera::getUp() const {
+
+	return m_Up;
 
 }

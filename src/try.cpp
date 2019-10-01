@@ -13,6 +13,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
+Camera cam;
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, width*0.625f);
@@ -68,14 +70,14 @@ int main(void) {
 
     float vertices[] = {
 
-        -1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 1.000f, //Front left down 0
-        -1.0f, -1.0f,  1.0f, 1.000f, 1.000f, 1.000f, //Front right down 1
-        -1.0f,  1.0f, -1.0f, 0.000f, 0.000f, 0.000f, //Front left up 2
-        -1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 0.000f, //Front right up 3
-         1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 1.000f, //Back left down 4
-         1.0f, -1.0f,  1.0f, 1.000f, 1.000f, 1.000f, //Back right down 5
-         1.0f,  1.0f, -1.0f, 0.000f, 0.000f, 0.000f, //Back left up 6
-         1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 0.000f, //Back right up 7
+        -1.0f, -1.0f, -1.0f, 1.000f, 1.000f, 0.000f, //Front left down 0
+        -1.0f, -1.0f,  1.0f, 0.000f, 1.000f, 0.000f, //Front right down 1
+        -1.0f,  1.0f, -1.0f, 1.000f, 1.000f, 1.000f, //Front left up 2
+        -1.0f,  1.0f,  1.0f, 0.000f, 1.000f, 1.000f, //Front right up 3
+         1.0f, -1.0f, -1.0f, 1.000f, 0.000f, 0.000f, //Back left down 4
+         1.0f, -1.0f,  1.0f, 0.000f, 0.000f, 0.000f, //Back right down 5
+         1.0f,  1.0f, -1.0f, 1.000f, 0.000f, 1.000f, //Back left up 6
+         1.0f,  1.0f,  1.0f, 0.000f, 0.000f, 1.000f, //Back right up 7
     };
 
     unsigned short indices[] = {
@@ -100,7 +102,6 @@ int main(void) {
 
     };
 
-    Camera cam;
     VertexArray VAO;
 
     VAO.VBO.bufferData(sizeof(vertices), (void *) vertices);
@@ -111,7 +112,8 @@ int main(void) {
     VAO.addAttribute(GL_FLOAT, 3);
     VAO.addAttribute(GL_FLOAT, 3);
 
-    glm::mat4 u_modelMatrix(1);
+    glm::mat4 u_modelMatrix1(1);
+    glm::mat4 u_modelMatrix2(1);
 
     // u_modelMatrix[3][0] = 10;
     // u_modelMatrix[0][3] = -10.0f;
@@ -119,10 +121,22 @@ int main(void) {
     cam.setPos(glm::vec3(0.0f, 0.0f, -10.0f));
     cam.lookAt(glm::vec3(1.0f, 1.0f, 1.0f));
 
-    printMatrix(u_modelMatrix);
+    u_modelMatrix1[0][0] = 0.5;
+    u_modelMatrix1[1][1] = 0.5;
+    u_modelMatrix1[2][2] = 0.5;
+    u_modelMatrix1[3][0] = 3;
+    u_modelMatrix1[3][1] = 3;
+    u_modelMatrix1[3][2] = 3;
+
+    u_modelMatrix2[0][0] = 2.0;
+    u_modelMatrix2[1][1] = 2.0;
+    u_modelMatrix2[2][2] = 2.0;
+    u_modelMatrix2[3][0] = 0;
+    u_modelMatrix2[3][1] = 0;
+    u_modelMatrix2[3][2] = 0;
+
     printMatrix(cam.getViewMatrix());
     printMatrix(cam.getPerspectiveMatrix());
-    printMatrix(u_modelMatrix * cam.getViewMatrix() * cam.getPerspectiveMatrix());
 
     glm::mat4 matrix;
     glm::mat4 lastViewMatrix = glm::mat4(1);
@@ -136,6 +150,9 @@ int main(void) {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        // u_modelMatrix1 = glm::rotate(u_modelMatrix1, 0.05f, glm::vec3(0.3f, 0.7f, 0.5f));
+        // u_modelMatrix2 = glm::rotate(u_modelMatrix2, -0.05f, glm::vec3(0.3f, 0.7f, 0.5f));
+
         // printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
         if (cam.getViewMatrix() != lastViewMatrix) {
             printMatrix(cam.getViewMatrix());
@@ -143,38 +160,23 @@ int main(void) {
             printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         }
 
+
+
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         GLCall(glClearColor(0.0f, 0.5019f, 0.3333f, 1.0f));
 
         shader.use();
-        // cam.lookAt(glm::vec3(3.0f, 3.0f, 3.0f));
+        cam.lookAt(glm::vec3(3.0f, 3.0f, 3.0f));
 
-        // u_modelMatrix = glm::rotate(u_modelMatrix, 0.1f, glm::vec3(0.3, 0.7, 0.5));
-
-        u_modelMatrix[0][0] = 2.0;
-        u_modelMatrix[1][1] = 2.0;
-        u_modelMatrix[2][2] = 2.0;
-        u_modelMatrix[3][0] = 0;
-        u_modelMatrix[3][1] = 0;
-        u_modelMatrix[3][2] = 0;
-
-        matrix = cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix;
+        matrix = cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix1;
 
         shader.setUniform("matrix", matrix);
 
         // VAO.drawArrays(GL_TRIANGLES, 0, 36);
         VAO.drawElements(GL_TRIANGLES, indexCount);
 
-
-        u_modelMatrix[0][0] = 0.5;
-        u_modelMatrix[1][1] = 0.5;
-        u_modelMatrix[2][2] = 0.5;
-        u_modelMatrix[3][0] = 3;
-        u_modelMatrix[3][1] = 3;
-        u_modelMatrix[3][2] = 3;
-
-        matrix = cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix;
+        matrix = cam.getPerspectiveMatrix() * cam.getViewMatrix() * u_modelMatrix2;
 
         shader.setUniform("matrix", matrix);
 
@@ -183,7 +185,7 @@ int main(void) {
 
         lastViewMatrix = cam.getViewMatrix();
 
-        cam.move(acceleration);
+        cam.move(cam.getFront() * acceleration.z + cam.getUp() * acceleration.y + cam.getSide() * acceleration.x);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -197,47 +199,49 @@ int main(void) {
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    const float speed = 0.1f;
+
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
         glfwSetWindowShouldClose(window, true);
 
     } else if (key == GLFW_KEY_W) {
         if (action == GLFW_PRESS) {
-            acceleration.z = -0.05;
+            acceleration.z = speed;
         } else if (action == GLFW_RELEASE) {
             acceleration.z = 0;
         }
 
     } else if (key == GLFW_KEY_S) {
         if (action == GLFW_PRESS) {
-            acceleration.z = 0.05;
+            acceleration.z = -speed;
         } else if (action == GLFW_RELEASE) {
             acceleration.z = 0;
         }
 
     } else if (key == GLFW_KEY_A) {
         if (action == GLFW_PRESS) {
-            acceleration.x = -0.05;
+            acceleration.x = -speed;
         } else if (action == GLFW_RELEASE) {
             acceleration.x = 0;
         }
 
     } else if (key == GLFW_KEY_D) {
         if (action == GLFW_PRESS) {
-            acceleration.x = 0.05;
+            acceleration.x = speed;
         } else if (action == GLFW_RELEASE) {
             acceleration.x = 0;
         }
 
     } else if (key == GLFW_KEY_Q) {
         if (action == GLFW_PRESS) {
-            acceleration.y = 0.05;
+            acceleration.y = speed;
         } else if (action == GLFW_RELEASE) {
             acceleration.y = 0;
         }
 
     } else if (key == GLFW_KEY_E) {
         if (action == GLFW_PRESS) {
-            acceleration.y = -0.05;
+            acceleration.y = -speed;
         } else if (action == GLFW_RELEASE) {
             acceleration.y = 0;
         }

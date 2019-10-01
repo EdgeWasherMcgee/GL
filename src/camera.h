@@ -16,12 +16,16 @@ public:
 
 	void rotateY(float angle);
 
-	void rotateZ(float angle);
+	void rotateX(float angle);
 
 	void rotateAround(glm::vec3 vec);
 
 	glm::mat4 getViewMatrix() const;
 	glm::mat4 getPerspectiveMatrix() const;
+
+	glm::vec3 getFront() const;
+	glm::vec3 getSide() const;
+	glm::vec3 getUp() const;
 
 	float FOV;
 

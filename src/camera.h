@@ -26,12 +26,11 @@ public:
 	glm::vec3 getFront() const;
 	glm::vec3 getSide() const;
 	glm::vec3 getUp() const;
-
-	float FOV;
-
-	glm::mat4 viewMatrix;
+	glm::vec3 getPos() const;
 
 private:
+
+	float FOV;
 
 	glm::vec3 m_Front;
 	glm::vec3 m_Side;

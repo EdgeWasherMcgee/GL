@@ -4,11 +4,20 @@
 #include "indexBuffer.h"
 #include <vector>
 
+enum VertexStorageMode {
+
+	VertexFirst = 0,
+	VertexWeave = 1,
+	VertexLast = 2
+
+};
+
 struct vertexArrayObjectLayout {
 
 	GLenum type;
 	bool normalize;
 	GLsizei size;
+	GLsizei count;
 
 };
 
@@ -19,7 +28,7 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	void addAttribute(GLenum type, GLsizei size);
+	void addAttribute(VertexStorageMode vertexStorage, GLenum type, GLsizei size, GLsizei count);
 
 	void drawElements(GLenum mode, GLsizei count) const;
 
@@ -29,12 +38,21 @@ public:
 
 	inline void disuse() const;
 
+	void deleteBuffer();
+
 	IndexBuffer IBO;
 	VertexBuffer VBO;
 
 private:
 
-	std::vector<vertexArrayObjectLayout> layout;
+
+	std::vector<vertexArrayObjectLayout> firstLayout;
+	std::vector<vertexArrayObjectLayout> weaveLayout;
+	std::vector<vertexArrayObjectLayout> lastLayout;
+
+	GLsizei firstByteSize;
+	GLsizei weaveByteSize;
+	GLsizei lastByteSize;
 
 	GLuint ID;
 

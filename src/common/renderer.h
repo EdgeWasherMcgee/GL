@@ -7,6 +7,8 @@
 #include "../glm/gtc/matrix_transform.hpp"
 #include "../glm/gtc/type_ptr.hpp"
 
+#define INT2VOIDP (void*)(uintptr_t)
+
 #define ASSERT(x) if (!(x)) raise(SIGTRAP);
 
 #define DEBUG

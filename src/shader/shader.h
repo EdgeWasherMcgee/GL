@@ -106,6 +106,13 @@ public:
 		GLCall(setUniform(getUniform(name), value));
 	}
 
+	void setUniform(GLuint ID, glm::vec3 value) {
+		GLCall(glUniform3f(ID, value.x, value.y, value.z));
+	}
+
+	void setUniform(std::string name, glm::vec3 value) {
+		GLCall(setUniform(getUniform(name), value));
+	}
 	
 	void setUniform(GLuint ID, const glm::mat4 &value) const {
 		GLCall(glUniformMatrix4fv(ID, 1, GL_FALSE, glm::value_ptr(value)));

@@ -76,6 +76,7 @@ int main(void) {
     GLCall(glEnable(GL_FRAMEBUFFER_SRGB));
 
     float vertices[] = {
+
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
          0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
          0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
@@ -206,7 +207,7 @@ int main(void) {
         // u_modelMatrix1 = glm::rotate(u_modelMatrix1, 0.05f, glm::vec3(0.3f, 0.7f, 0.5f));
         // u_modelMatrix2 = glm::rotate(u_modelMatrix2, -0.05f, glm::vec3(0.3f, 0.7f, 0.5f));
 
-        printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
+        // printf("%fms, %f fps\n", deltaTime, (1/deltaTime));
 
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -220,6 +221,8 @@ int main(void) {
         shader.setUniform("matrix", matrix);
         shader.setUniform("objColor", objectColor);
         shader.setUniform("lightColor", lightColor);
+        shader.setUniform("viewPos", cam.getPos());
+        shader.setUniform("lightPos", glm::vec3(3, 3, 3));
 
         VAO.drawArrays(GL_TRIANGLES, 0, vertexCount);
 

@@ -26,7 +26,6 @@ class VertexArray {
 public:
 
 	VertexArray();
-	~VertexArray();
 
 	void addAttribute(VertexStorageMode vertexStorage, GLenum type, GLsizei size, GLsizei count);
 

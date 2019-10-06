@@ -28,6 +28,8 @@ public:
 	glm::vec3 getUp() const;
 	glm::vec3 getPos() const;
 
+	glm::mat4 viewMatrix;
+
 private:
 
 	float FOV;

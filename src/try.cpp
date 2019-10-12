@@ -162,8 +162,8 @@ int main(void) {
     // GLuint indexCount = sizeof(indices)/sizeof(unsigned short);
     GLuint vertexCount = sizeof(vertices)/(sizeof(float) * 2);
 
-    VAO.addAttribute(VertexWeave, GL_FLOAT, 3, vertexCount);
-    VAO.addAttribute(VertexWeave, GL_FLOAT, 3, vertexCount);
+    VAO.addAttribute(GL_FLOAT, 3);
+    VAO.addAttribute(GL_FLOAT, 3);
 
     glm::mat4 u_modelMatrix1(1);
     glm::mat4 u_modelMatrix2(1);
@@ -174,7 +174,7 @@ int main(void) {
     cam.setPos(glm::vec3(0.0f, 0.0f, -10.0f));
     cam.lookAt(glm::vec3(1.0f, 1.0f, 1.0f));
 
-    glm::vec3 objectColor = glm::vec3(1.0f, 0.5f, 0.31f);
+    glm::vec3 objectColor = glm::vec3(0.0f, 0.5f, 0.5f);
 
     glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -194,6 +194,7 @@ int main(void) {
 
     glm::mat4 matrix;
     glm::mat4 lastViewMatrix = glm::mat4(1);
+    printf("%d\n", vertexCount);
 
     // modelMatrix = glm::rotate(modelMatrix, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     /* Loop until the user closes the window */
@@ -211,7 +212,7 @@ int main(void) {
 
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-        GLCall(glClearColor(0.0f, 0.5019f, 0.3333f, 1.0f));
+        GLCall(glClearColor(0.05f, 0.05f, 0.05f, 1.0f));
 
         cam.lookAt(glm::vec3(3.0f, 3.0f, 3.0f));
 
@@ -223,6 +224,7 @@ int main(void) {
         shader.setUniform("lightColor", lightColor);
         shader.setUniform("viewPos", cam.getPos());
         shader.setUniform("lightPos", glm::vec3(3, 3, 3));
+        shader.setUniform("model", u_modelMatrix2);
 
         VAO.drawArrays(GL_TRIANGLES, 0, vertexCount);
 
@@ -243,8 +245,6 @@ int main(void) {
         /* Poll for and process events */
         glfwPollEvents();
     }
-
-    VAO.deleteBuffer();
 
     glfwTerminate();
     return 0;
